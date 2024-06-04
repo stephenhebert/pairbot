@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  pairbot-bot:
+    network_mode: "host"
+    image: node:18-alpine
+    container_name: pairbot-bot
+    hostname: bot
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    working_dir: /app
+    env_file:
+      - ./.env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  db:
+    network_mode: "host"
+    image: mysql
+    hostname: db
+    container_name: pairbot-db
+    command: --explicit_defaults_for_timestamp --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
+    restart: always
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    env_file:
+      - ./.env
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/world.sql:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  dbdata: {}

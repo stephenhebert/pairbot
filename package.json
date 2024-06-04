@@ -1,0 +1,17 @@
+{
+  "name": "pairbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docker": "docker compose down && docker compose build && docker compose up",
+    "reset-db": "rm -rf db/prisma/migrations && npx prisma migrate dev --name init",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "prisma": {
+    "schema": "db/prisma/schema.prisma"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
